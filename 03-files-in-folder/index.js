@@ -11,14 +11,14 @@ fs.readdir(folderPath, { withFileTypes: true }, (err, files) => {
             files.forEach(file => {
                 if (!file.isDirectory()) {
                     let fileName = file.name.toString().split('.');
-                    console.log(fileName[0] + " - " + fileName[1] + " - " + getFilesizeInBytes(file.name) + 'kb');
+                    console.log(fileName[0] + " - " + fileName[1] + " - " + getFilesizeInKilobytes(file.name) + 'kb');
                 }
             })
         }
     })
 
 
-function getFilesizeInBytes(filename) {
+function getFilesizeInKilobytes(filename) {
     const filePath = path.join(__dirname, 'secret-folder', filename);
     let stats = fs.statSync(filePath);
     let fileSizeInKilobytes = (stats.size / 1024).toFixed(3);
