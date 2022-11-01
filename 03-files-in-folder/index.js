@@ -10,8 +10,10 @@ fs.readdir(folderPath, { withFileTypes: true }, (err, files) => {
     else {
         files.forEach(file => {
             if (!file.isDirectory()) {
-                let fileName = file.name.toString().split('.');
-                console.log(fileName[0] + " - " + fileName[1] + " - " + getFilesizeInKilobytes(file.name) + 'kb');
+                let fileName = file.name.toString();
+                let basename = path.basename(fileName).substr(0,path.basename(fileName).length - path.extname(fileName).length);
+                let extantion = path.extname(fileName).substr(1);
+                console.log(basename + " - " + extantion + " - " + getFilesizeInKilobytes(file.name) + 'kb');
             }
         })
     }
