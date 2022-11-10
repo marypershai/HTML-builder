@@ -3,26 +3,23 @@ const path = require('path');
 
 const folderPath = path.join(__dirname, 'secret-folder');
 
-fs.readdir(folderPath, { withFileTypes: true }, (err, files) => {
-    console.log("\nCurrent directory files:");
-    if (err)
-        console.log(err);
-    else {
-        files.forEach(file => {
-            if (!file.isDirectory()) {
-                let fileName = file.name.toString();
-                let basename = path.basename(fileName).substr(0,path.basename(fileName).length - path.extname(fileName).length);
-                let extantion = path.extname(fileName).substr(1);
-                console.log(basename + " - " + extantion + " - " + getFilesizeInKilobytes(file.name) + 'kb');
+fs.readdir(folderPath, {withFileTypes: true}, (error, files) => {
+    if (!error) {
+      files.forEach(file => {
+        if (file.isFile()) {
+          fs.stat(path.join(folderPath, file.name), (error, stats) => {
+            if (!error) {
+              let fileName = path.parse(path.join(folderPath, file.name)).name;
+              let fileExt = path.extname(path.join(folderPath, file.name)).slice(1);
+              let size = (stats.size / 1024).toFixed(3);
+              console.log(fileName + ' - ' + fileExt + ' - ' + size + ' bytes');
+            } else {
+              console.error(error);
             }
-        })
+          })
+        }
+      });
+    } else {
+      console.error(error);
     }
-})
-
-
-function getFilesizeInKilobytes(filename) {
-    const filePath = path.join(__dirname, 'secret-folder', filename);
-    let stats = fs.statSync(filePath);
-    let fileSizeInKilobytes = (stats.size / 1024).toFixed(3);
-    return fileSizeInKilobytes;
-}
+  });
