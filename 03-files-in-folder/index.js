@@ -12,7 +12,7 @@ fs.readdir(folderPath, {withFileTypes: true}, (error, files) => {
               let fileName = path.parse(path.join(folderPath, file.name)).name;
               let fileExt = path.extname(path.join(folderPath, file.name)).slice(1);
               let size = (stats.size / 1024).toFixed(3);
-              console.log(fileName + ' - ' + fileExt + ' - ' + size + ' bytes');
+              console.log(fileName + ' - ' + fileExt + ' - ' + size + ' kb');
             } else {
               console.error(error);
             }
